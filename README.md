@@ -1,5 +1,7 @@
 # CS210 Simple Shell
 
+[![C CI](https://github.com/finlaysr/CS210-Simple-Shell/actions/workflows/c-ci.yml/badge.svg)](https://github.com/finlaysr/CS210-Simple-Shell/actions/workflows/c-ci.yml)
+
 ## AUTHORS
 * Callum Charteris
 * Duncun Amundrund
