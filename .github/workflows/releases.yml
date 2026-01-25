@@ -37,6 +37,6 @@ jobs:
                 Automated release from successful build.
                 Changes: ${{ github.event.workflow_run.head_commit.message }}
             name: Build v${{ github.event.workflow_run.run_number }}
-            tag: v${{ github.event.workflow_run.run_number }}
+            tag_name: v${{ github.event.workflow_run.run_number }}
             draft: false
             prerelease: false
