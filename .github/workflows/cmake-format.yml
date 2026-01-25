@@ -22,7 +22,8 @@ jobs:
       run: make format
       
     - name: Commit formatting
+      if: github.event_name == 'push'
       uses: stefanzweifel/git-auto-commit-action@v7
       with:
         commit_user_name: cmake-format-bot
-        commit_message: Apply auto formatting
+        commit_message: "[Bot] Apply auto formatting"
