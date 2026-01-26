@@ -3,25 +3,31 @@
 #include <string.h>
 
 const char delimiters[] = " \t\n|><&;";
+int get_input(char output[INPUT_LEN]) {
+  printf("--> ");
 
-int get_input(char output[512]) {
-  printf("🍣🍣🍣> ");
-
-  char input_buffer[512];
-  char *tmp = fgets(input_buffer, 511, stdin); // WARN: Check if n correct
+  char input_buffer[INPUT_LEN];
+  // WARN: Check if n correct
+  char *tmp = fgets(input_buffer, INPUT_LEN - 1, stdin);
 
   tokenize(input_buffer, output);
 
-  return !((strcmp(input_buffer, "exit\n") == 0 || (tmp == NULL)));
+  return !((strcmp(output, "exit") == 0 || (tmp == NULL)));
 }
 
-void tokenize(char input[512], char output[512]) {
+void tokenize(char input[INPUT_LEN], char output[INPUT_LEN]) {
   char *token;
   token = strtok_r(input, delimiters, &input);
 
+  printf("Tokens: [");
   while (token) {
-    strlcat(output, token, 512);
+    printf("\"%s\"", token);
+    strlcat(output, token, INPUT_LEN);
+    token = strtok_r(NULL, delimiters, &input);
+    if (token) {
+      printf(", ");
+      strlcat(output, " ", INPUT_LEN);
+    }
   }
-
-  printf("tokens: {%s}", output);
+  printf("]\n");
 }
