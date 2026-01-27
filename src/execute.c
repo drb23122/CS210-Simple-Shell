@@ -5,7 +5,7 @@
 #include <sys/wait.h>
 #include <unistd.h>
 
-int run(char *input[]) {
+int run(char *input[INPUT_LEN]) {
 
   pid_t p = fork();
 

@@ -27,8 +27,6 @@ void tokenize(char input[INPUT_LEN], char *output[INPUT_LEN]) {
 
   for (int i = 0; token; i++) {
     output[i] = token;
-    printf("\"%s\"", output[i]);
-
     token = strtok_r(input, delimiters, &input);
   }
 }

@@ -1,5 +1,4 @@
 #include "../include/execute.h"
-#include "../include/externelRunner.h"
 #include "../include/input.h"
 #include <stdio.h>
 
@@ -18,8 +17,7 @@ const char *wel =
     "⠀⠻⣿⣿⣿⣿⣿⣿⣿⣶⣦⣤⣤⣴⣶⣿⣿⣿⣿⣿⣿⣿⠟⠀\n"
     "⠀⠀⠈⠙⠻⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠟⠋⠁⠀⠀\n"
     "⠀⠀⠀⠀⠀⠀⠀⠉⠉⠙⠛⠛⠛⠛⠋⠉⠉⠀⠀⠀⠀⠀⠀⠀\n"
-    "\n"
-    "";
+    "\n";
 
 int main(void) {
   printf("%s", wel);
