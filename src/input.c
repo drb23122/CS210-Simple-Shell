@@ -7,6 +7,7 @@ const char delimiters[] = " \t\n|><&;";
 
 int get_input(char *output[INPUT_LEN]) {
   printf("--> ");
+  fflush(stdout);
 
   char input_buffer[INPUT_LEN];
   // WARN: Check if n correct
@@ -18,19 +19,15 @@ int get_input(char *output[INPUT_LEN]) {
 }
 
 void tokenize(char input[INPUT_LEN], char *output[INPUT_LEN]) {
-  char *token;
-  token = strtok_r(input, delimiters, &input);
+  char *token = strtok_r(input, delimiters, &input);
 
   printf("Tokens: [");
-  fflush(stdout);
-
   for (int i = 0; token; i++) {
 
-    output[i] = malloc((strlen(token) + 1) * sizeof(char));
-    strcpy(output[i], token);
+    output[i] = token;
     printf("\"%s\"", output[i]);
 
-    token = strtok_r(NULL, delimiters, &input);
+    token = strtok_r(input, delimiters, &input);
     if (token) {
       printf(", ");
     }
@@ -40,7 +37,6 @@ void tokenize(char input[INPUT_LEN], char *output[INPUT_LEN]) {
 
 int clear(char *input[INPUT_LEN]) {
   for (int i = 0; input[i]; i++) {
-    free(input[i]);
     input[i] = NULL;
   }
   return 0;
