@@ -41,6 +41,7 @@ int main(void) {
   clear(tokens); // Clears data left over from previous run which causes errors
 
   while (get_input(input_buffer, tokens)) {
+    // print_tokens(tokens); // Uncomment for debugging
     if (!check_builtin(tokens)) {
       run(tokens);
     }

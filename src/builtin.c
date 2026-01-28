@@ -11,6 +11,9 @@ const char *names[] = {"getpath", "setpath", "cd"};
 int (*funcs[])(char **) = {&getpath, &setpath, &cd};
 
 int check_builtin(char *input[INPUT_LEN]) {
+  if (!input[0]) {
+    return 1;
+  }
   for (int i = 0; i < num; i++) {
     if (!strcmp(input[0], names[i])) {
       funcs[i](input);
@@ -42,7 +45,13 @@ int cd(char *input[INPUT_LEN]) {
     set_home();
     return 0;
   }
-
-  chdir(input[1]);
+  if (input[2]) {
+    printf("cd takes only one argument!\n");
+    return 1;
+  }
+  if (chdir(input[1])) {
+    perror("cd");
+    return 1;
+  }
   return 0;
 }

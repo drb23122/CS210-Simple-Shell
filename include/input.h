@@ -8,3 +8,6 @@ int tokenize(char input[INPUT_LEN], char *output[INPUT_LEN]);
 
 // Delete all words in array
 int clear(char *array[INPUT_LEN]);
+
+// Print all tokens in array
+void print_tokens(char *array[INPUT_LEN]);

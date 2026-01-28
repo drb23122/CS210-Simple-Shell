@@ -1,11 +1,15 @@
 #include "../include/input.h"
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
+#include <unistd.h>
 
 const char delimiters[] = " \t\n|><&;";
 
 int get_input(char *input_buffer, char *output[INPUT_LEN]) {
-  printf("--> ");
+  char cwd[100];
+  getcwd(cwd, 100);
+  printf("%s: %s --> ", getenv("USER"), cwd);
   fflush(stdout); // Fix for prompt not printing correctly
 
   char *ret = fgets(input_buffer, INPUT_LEN, stdin);
@@ -47,4 +51,15 @@ int clear(char *array[INPUT_LEN]) {
     array[i] = NULL;
   }
   return 0;
+}
+
+void print_tokens(char *array[INPUT_LEN]) {
+  printf("tokens: [");
+  for (int i = 0; array[i]; i++) {
+    printf("\"%s\"", array[i]);
+    if (array[i + 1]) {
+      printf(", ");
+    }
+  }
+  printf("]\n");
 }
