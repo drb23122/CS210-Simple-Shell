@@ -6,13 +6,34 @@
 
 const char delimiters[] = " \t\n|><&;";
 
-int get_input(char *input_buffer, char *output[INPUT_LEN]) {
+void print_prompt() {
   char cwd[100];
   getcwd(cwd, 100);
-  printf("%s: %s --> ", getenv("USER"), cwd);
-  fflush(stdout); // Fix for prompt not printing correctly
 
+  printf(ANSI_GREEN "" ANSI_GREEN_BG "%s" GREEN_FG_BLUE_BG, getenv("USER"));
+  printf("" ANSI_BLUE_BG "%s" ANSI_BLUE "", cwd);
+
+  fflush(stdout); // Fix for prompt not printing correctly
+}
+
+void print_flashing_cursor() {
+  printf(RED_BG_BLACK_BG BLINK "" ANSI_RED BLINK "" ANSI_RESET " ");
+}
+
+void remove_flashing_cursor(char *input) {
+  printf("\33[A\33[2K\r");
+  print_prompt();
+  printf(RED_BG_BLACK_BG "" ANSI_RED "" ANSI_RESET " %s", input);
+
+  fflush(stdout); // Fix for prompt not printing correctly
+}
+
+int get_input(char *input_buffer, char *output[INPUT_LEN]) {
+  print_prompt();
+  print_flashing_cursor();
   char *ret = fgets(input_buffer, INPUT_LEN, stdin);
+  remove_flashing_cursor(input_buffer);
+
   // Exit if CTR-d pressed
   if (!ret) {
     return 0;
