@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-char *history[INPUT_LEN][20];
+char *history[INPUT_LEN][HIST_LEN];
 int total = 0;
 
 // returns 1 if history error, else zero
@@ -19,14 +19,19 @@ int check_hist(char *tokens[INPUT_LEN]) {
       return 1;
     }
 
-    char num_s[3];
-    strncpy(num_s, tokens[0] + 1, 2);
+    char num_s[4];
+    strncpy(num_s, tokens[0] + 1, 3);
     int num = atoi(num_s);
-    if (num < 1 || num > 20) {
-      printf("History goes from position 1 to position 20!\n");
+    if (num < -HIST_LEN || num > HIST_LEN) {
+      printf("History goes from position -%d to %d!\n", HIST_LEN, HIST_LEN);
       return 1;
     }
-    int pos = num - 1;
+    int pos;
+    if (num > 0) {
+      pos = num - 1;
+    } else {
+      pos = total + num;
+    }
 
     for (int i = 0; history[pos][i]; i++) {
       tokens[i] = history[pos][i];
@@ -48,21 +53,21 @@ int add_hist(char *input[INPUT_LEN]) {
   return 0;
 }
 
-void free_hist() {
-  for (int i = 0; i < 20; i++) {
-    for (int j = 0; history[i][j]; j++) {
-      free(history[i][j]);
-    }
-  }
-}
-
 void print_hist() {
-  printf("hisory: \n");
-  for (int i = 0; i < 20; i++) {
+  printf("");
+  for (int i = 0; i < HIST_LEN; i++) {
     printf("%2d: ", i + 1);
     for (int j = 0; history[i][j]; j++) {
       printf("%s ", history[i][j]);
     }
     printf("\n");
+  }
+}
+
+void free_hist() {
+  for (int i = 0; i < HIST_LEN; i++) {
+    for (int j = 0; history[i][j]; j++) {
+      free(history[i][j]);
+    }
   }
 }

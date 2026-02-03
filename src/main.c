@@ -42,12 +42,12 @@ int main(void) {
   clear(tokens); // Clears data left over from previous run which causes errors
 
   while (get_input(input_buffer, tokens)) {
+    // print_tokens(tokens); // Uncomment for debugging
 
-    check_hist(tokens);
-    print_tokens(tokens); // Uncomment for debugging
-
-    if (!check_builtin(tokens) || !check_hist(tokens)) {
-      run(tokens);
+    if (!check_hist(tokens)) {
+      if (!check_builtin(tokens)) {
+        run(tokens);
+      }
     }
 
     clear(tokens);
