@@ -7,9 +7,10 @@
 const char delimiters[] = " \t\n|><&;";
 
 int get_input(char *input_buffer, char *output[INPUT_LEN]) {
+  // Formatting for prompt
   char cwd[100];
-  getcwd(cwd, 100);
-  printf("%s: %s --> ", getenv("USER"), cwd);
+  getcwd(cwd, 100);                           // Getting current directory
+  printf("%s: %s --> ", getenv("USER"), cwd); // Prints prompt
   fflush(stdout); // Fix for prompt not printing correctly
 
   char *ret = fgets(input_buffer, INPUT_LEN, stdin);
@@ -39,7 +40,7 @@ int tokenize(char input[INPUT_LEN], char *output[INPUT_LEN]) {
     output[i] = token;
     token = strtok_r(input, delimiters, &input);
   }
-  return 1;
+  return 0;
 }
 
 int clear(char *array[INPUT_LEN]) {
