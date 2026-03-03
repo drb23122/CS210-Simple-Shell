@@ -17,6 +17,8 @@ int cd(char *input[INPUT_LEN]);
 int print_history(char *input[INPUT_LEN]);
 
 // prints the history in order from oldest to newest
-int new_alias(char *input[INPUT_LEN]);
+int alias(char *input[INPUT_LEN]);
 
 int print_aliases(char *input[INPUT_LEN]);
+
+int unalias(char *input[INPUT_LEN]);

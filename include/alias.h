@@ -11,6 +11,7 @@ typedef struct {
 
 int check_alias(char *tokens[INPUT_LEN]);
 void add_alias(char *tokens[INPUT_LEN]);
+void remove_alias(char *tokens[INPUT_LEN]);
 void output_aliases(FILE *stream);
 void load_aliases();
 void save_aliases();

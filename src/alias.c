@@ -12,27 +12,30 @@ int check_alias(char *tokens[INPUT_LEN]) {
   if (!tokens[0]) {
     return 0;
   }
+  if (!strcmp(tokens[0], "unalias")) {
+    remove_alias(tokens);
+  } else {
+    for (int tok_num = 0; tokens[tok_num]; tok_num++) {
+      for (int ali_num = 0; ali_num < head_a; ali_num++) {
+        if (!strcmp(tokens[tok_num], aliases[ali_num]->name)) {
+          // If alias found then insert it
+          int endpos = 0;
+          for (; tokens[endpos]; endpos++) {
+          } // Calculate position of last token in array
+          endpos--;
 
-  for (int tok_num = 0; tokens[tok_num]; tok_num++) {
-    for (int ali_num = 0; ali_num < head_a; ali_num++) {
-      if (!strcmp(tokens[tok_num], aliases[ali_num]->name)) {
-        // If alias found then insert it
-        int endpos = 0;
-        for (; tokens[endpos]; endpos++) {
-        } // Calculate position of last token in array
-        endpos--;
+          int comd_len = aliases[ali_num]->command_len;
+          // Move elements out of the way
+          for (int k = endpos; k > tok_num; k--) {
+            tokens[k + comd_len - 1] = tokens[k];
+          }
+          // Insert new elements
+          for (int k = 0; k < comd_len; k++) {
+            tokens[tok_num + k] = aliases[ali_num]->command[k];
+          }
 
-        int comd_len = aliases[ali_num]->command_len;
-        // Move elements out of the way
-        for (int k = endpos; k > tok_num; k--) {
-          tokens[k + comd_len - 1] = tokens[k];
+          return 1;
         }
-        // Insert new elements
-        for (int k = 0; k < comd_len; k++) {
-          tokens[tok_num + k] = aliases[ali_num]->command[k];
-        }
-
-        return 1;
       }
     }
   }
@@ -63,6 +66,42 @@ void add_alias(char *tokens[INPUT_LEN]) {
   }
 
   head_a++;
+}
+
+void remove_alias(char *tokens[INPUT_LEN]) {
+  if (!tokens[1]) {
+    printf("Please provide the name of the alias you wish to remove!\n");
+    return;
+  }
+
+  // find alias position
+  int num = -1;
+  for (int i = 0; i < head_a; i++) {
+    if (!strcmp(tokens[1], aliases[i]->name)) {
+      num = i;
+      break;
+    }
+  }
+
+  if (num == -1) {
+    printf("Alias not found!\n");
+    return;
+  }
+  printf("Unaliasing %s\n", tokens[1]);
+
+  // remove old alias
+  free(aliases[num]->name);
+  for (int i = 0; i < aliases[num]->command_len; i++) {
+    free(aliases[num]->command[i]);
+    aliases[num]->command[i] = NULL;
+  }
+  free(aliases[num]);
+  aliases[num] = NULL;
+  // fill free space
+  for (int i = num; i < head_a; i++) {
+    aliases[i] = aliases[i + 1];
+  }
+  head_a--;
 }
 
 void output_aliases(FILE *stream) {
