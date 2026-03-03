@@ -4,46 +4,14 @@
 #include "../include/execute.h"
 #include "../include/history.h"
 #include "../include/input.h"
+#include "../include/ascii_art.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
 
-const char *wel =
-    "This is the SUSHI Shell - Strathclyde Unix-type SHell Implementation \n"
-    "⠀⠀⠀⠀⠀⠀⠀⣀⣀⣤⣤⣤⣤⣤⣤⣀⣀⠀⠀⠀⠀⠀⠀⠀\n"
-    "⠀⠀⣠⣴⣾⣿⡿⠿⠛⠛⠛⠛⠛⠛⠛⠻⠿⢿⣿⣶⣤⣄⠀⠀\n"
-    "⢠⣾⡿⠛⠉⠀⠀⠀⠀⣀⣀⣀⣀⣀⣀⠀⠀⠀⠀⠉⠛⢿⣷⡀\n"
-    "⣿⣿⠀⠀⠀⠀⠀⢶⣿⣿⣿⣿⣿⣿⣿⣿⡶⠀⠀⠀⠀⠈⣿⣷\n"
-    "⣿⣿⣷⣄⡀⠀⠀⠀⠀⠉⠉⠉⠉⠉⠉⠀⠀⠀⠀⢀⣠⣾⣿⣿\n"
-    "⣿⣿⣿⣿⣿⣿⣶⣦⣤⣤⣤⣄⣠⣤⣤⣤⣴⣶⣿⣿⣿⣿⣿⣿\n"
-    "⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿\n"
-    "⣿⣿⣿⣿⣿⣿⣿⡿⠛⢿⣿⣿⣿⣿⡿⠛⢿⣿⣿⣿⣿⣿⣿⣿\n"
-    "⣿⣿⣿⣿⣿⣿⣿⣿⣦⣾⣿⣿⣿⣿⣷⣴⣿⣿⣿⣿⣿⣿⣿⣿\n"
-    "⢻⣿⣿⣿⣿⣿⣿⣏⠀⠉⠛⠛⠛⠛⠉⠀⣹⣿⣿⣿⣿⣿⣿⡟\n"
-    "⠀⠻⣿⣿⣿⣿⣿⣿⣿⣶⣦⣤⣤⣴⣶⣿⣿⣿⣿⣿⣿⣿⠟⠀\n"
-    "⠀⠀⠈⠙⠻⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠟⠋⠁⠀⠀\n"
-    "⠀⠀⠀⠀⠀⠀⠀⠉⠉⠙⠛⠛⠛⠛⠋⠉⠉⠀⠀⠀⠀⠀⠀⠀\n"
-    "\n";
-
-const char *exi = "                                88          88   \n"
-                  "                                88               \n"
-                  "                                88               \n"
-                  ",adPPYba, 88       88 ,adPPYba, 88,dPPYba,  88   \n"
-                  "I8[     I 88       88 I8[    !! 88P'     8a 88   \n"
-                  "  £Y8ba,  88       88  llY8ba,  88       88 88   \n"
-                  "aa    ]8I 8a,    ,a88 aa    ]8I 88       88 88   \n"
-                  "` YbbdP'    YbbdP 'Y8 `mYbbdP   88       88 88   \n"
-                  "⠀⠀⠀⢸⣦⡀⠀⠀⠀⠀⢀⡄             \n"
-                  "⠀⠀⠀⢸⣏⠻⣶⣤⡶⢾⡿⠁             \n"
-                  "⠀⠀⣀⣼⠷⠀⠀⠁ 𝑺𝑬𝑬 𝒀𝑶𝑼 𝑺𝑷𝑨𝑪𝑬   \n"
-                  "⠴⣾⣯⣅⣀⠀⠀⠀⠈⢻⣦⡀𝑪𝑶𝑾𝑩𝑶𝒀 . . . \n"
-                  "⠀⠀⠀⠉⢻⡇⣤⣾⣿⣷⣿⠏⠉            \n"
-                  "⠀⠀⠀⠀⠸⣿⡿⠏⠀⠀⠀⠀             \n"
-                  "⠀⠀⠀⠀⠀⠟⠁⠀⠀⠀⠀ ⠀⠀           \n"
-                  "\n";
-
 int main(void) {
-  printf("%s", wel);
+
+  printf("%s", WEL);
 
   char *saved_path[2] = {NULL, save_path()}; // stored in form of input
   printf("Saved path: %s\n", saved_path[1]);
@@ -75,7 +43,7 @@ int main(void) {
 
     clear(tokens);
   }
-  printf("%s", exi);
+  printf("%s", EXI);
 
   // Cleaning up
   setpath(saved_path);
