@@ -63,9 +63,9 @@ int check_history(char *tokens[INPUT_LEN]) {
         } else
           pos = num - 1; // no overflow
       }
-      // negative case
+      // negative case... !! = !-1
       else {
-        pos = (HIST_LEN + head + num - 1) % HIST_LEN;
+        pos = (HIST_LEN + head + num) % HIST_LEN;
       }
     }
 
@@ -73,7 +73,7 @@ int check_history(char *tokens[INPUT_LEN]) {
 
     // this would cause an error
     if (!(history[pos][0])) {
-      printf("History call does not exits!\n");
+      printf("No command in history location!\n");
       return 1;
     }
 
