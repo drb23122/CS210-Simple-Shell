@@ -62,6 +62,12 @@ int cd(char *input[INPUT_LEN]) {
 }
 
 int print_history(char *input[INPUT_LEN]) {
+  //check if second token exists..don't print history
+  if (input[1]) {
+	  printf("History doesn't take parameters!\n");
+	  return 1; //error code
+  }
+
   UNUSED(input);
   output_hist(stdout);
   return 0;
