@@ -32,15 +32,15 @@ int check_history(char *tokens[INPUT_LEN]) {
     // at this point, the command is at least valid whether history prompt or
     // normal command line
     int pos;
-    if (tokens[0][1] == '!') { 
+    if (tokens[0][1] == '!') {
 
-	//only '!!' can be entered
-	if (tokens[0][2]) {
-		printf("!! can only be called on it's own, with no extra input\n");
-		return 1;
-	}
-	
-      //else calculate the correct !! pos	
+      // only '!!' can be entered
+      if (tokens[0][2]) {
+        printf("!! can only be called on it's own, with no extra input\n");
+        return 1;
+      }
+
+      // else calculate the correct !! pos
       pos = (HIST_LEN + head - 1) % HIST_LEN;
     } else {
 
