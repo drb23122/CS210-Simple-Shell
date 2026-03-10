@@ -8,34 +8,81 @@
 Alias *aliases[ALIAS_LEN];
 int head_a = 0;
 
+// Returns 0 to continue
 int check_alias(char *tokens[INPUT_LEN]) {
   if (!tokens[0]) {
-    return 0;
+    return 1;
   }
+
+  // If unalias entered then remove the alias
   if (!strcmp(tokens[0], "unalias")) {
     remove_alias(tokens);
-  } else {
-    for (int tok_num = 0; tokens[tok_num]; tok_num++) {
-      for (int ali_num = 0; ali_num < head_a; ali_num++) {
-        if (!strcmp(tokens[tok_num], aliases[ali_num]->name)) {
-          // If alias found then insert it
-          int endpos = 0;
-          for (; tokens[endpos]; endpos++) {
-          } // Calculate position of last token in array
-          endpos--;
+    return 2;
+  }
 
-          int comd_len = aliases[ali_num]->command_len;
-          // Move elements out of the way
-          for (int k = endpos; k > tok_num; k--) {
-            tokens[k + comd_len - 1] = tokens[k];
-          }
-          // Insert new elements
-          for (int k = 0; k < comd_len; k++) {
-            tokens[tok_num + k] = aliases[ali_num]->command[k];
-          }
+  // Check each token won't be aliased infintely
+  for (int t = 0; tokens[t]; t++) {
+    int used[ALIAS_LEN];
+    if (alias_invalid(tokens[t], used)) {
+      printf("\"%s\" is an infinte alias!\n", tokens[t]);
+      return 1;
+    }
+  }
 
+  // Insert all aliases
+  while (insert_alias(tokens)) {
+  }
+
+  return 0;
+}
+
+// Returns a 1 if the token will be aliased infintely
+int alias_invalid(char *token, int used[ALIAS_LEN]) {
+  for (int a = 0; a < head_a; a++) {
+    if (!strcmp(token, aliases[a]->name)) {
+      if (used[a]) {
+        return 1;
+      }
+      used[a] = 1;
+
+      for (int c = 0; c < aliases[a]->command_len; c++) {
+        if (alias_invalid(aliases[a]->command[c], used)) {
           return 1;
         }
+      }
+    }
+  }
+  return 0;
+}
+
+// returns 0 while no aliases found
+int insert_alias(char *tokens[INPUT_LEN]) {
+  for (int tok_num = 0; tokens[tok_num]; tok_num++) {
+    for (int ali_num = 0; ali_num < head_a; ali_num++) {
+      if (!strcmp(tokens[tok_num], aliases[ali_num]->name)) {
+        // If alias found then insert it
+        int endpos = 0;
+        for (; tokens[endpos]; endpos++) {
+        } // Calculate position of last token in array
+        endpos--;
+
+        // Check new command won't be too long
+        int cmd_len = aliases[ali_num]->command_len;
+        if (endpos + cmd_len >= INPUT_LEN) {
+          printf("Buffer length exceeded!\n");
+          return 0;
+        }
+
+        // Move elements out of the way
+        for (int k = endpos; k > tok_num; k--) {
+          tokens[k + cmd_len - 1] = tokens[k];
+        }
+        // Insert new elements
+        for (int k = 0; k < cmd_len; k++) {
+          tokens[tok_num + k] = aliases[ali_num]->command[k];
+        }
+
+        return 1;
       }
     }
   }
@@ -98,7 +145,7 @@ void remove_alias(char *tokens[INPUT_LEN]) {
   free(aliases[num]);
   aliases[num] = NULL;
   // fill free space
-  for (int i = num; i < head_a; i++) {
+  for (int i = num; i < head_a - 1; i++) {
     aliases[i] = aliases[i + 1];
   }
   head_a--;

@@ -10,6 +10,8 @@ typedef struct {
 } Alias;
 
 int check_alias(char *tokens[INPUT_LEN]);
+int alias_invalid(char *token, int used[ALIAS_LEN]);
+int insert_alias(char *tokens[INPUT_LEN]);
 void add_alias(char *tokens[INPUT_LEN]);
 void remove_alias(char *tokens[INPUT_LEN]);
 void output_aliases(FILE *stream);

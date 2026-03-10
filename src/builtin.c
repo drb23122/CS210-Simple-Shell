@@ -10,11 +10,11 @@
 #include <errno.h>
 #define UNUSED(x) (void)(x)
 
-const int num = 7;
-const char *names[] = {"getpath", "setpath", "cd",     "history",
-                       "alias",   "aliases", "unalias"};
-int (*funcs[])(char **) = {&getpath, &setpath,       &cd,     &print_history,
-                           &alias,   &print_aliases, &unalias};
+const int num = 6;
+const char *names[] = {"getpath", "setpath", "cd",
+                       "history", "alias",   "aliases"};
+int (*funcs[])(char **) = {&getpath,       &setpath, &cd,
+                           &print_history, &alias,   &print_aliases};
 
 int check_builtin(char *input[INPUT_LEN]) {
   if (!input[0]) {
@@ -83,12 +83,5 @@ int alias(char *input[INPUT_LEN]) {
 int print_aliases(char *input[INPUT_LEN]) {
   UNUSED(input);
   output_aliases(stdout);
-  return 0;
-}
-
-// This method exists to stop unlaias being executed since the unaliasing
-// triggered by check_alias
-int unalias(char *input[INPUT_LEN]) {
-  UNUSED(input);
   return 0;
 }

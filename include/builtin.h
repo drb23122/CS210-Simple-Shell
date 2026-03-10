@@ -20,5 +20,3 @@ int print_history(char *input[INPUT_LEN]);
 int alias(char *input[INPUT_LEN]);
 
 int print_aliases(char *input[INPUT_LEN]);
-
-int unalias(char *input[INPUT_LEN]);
