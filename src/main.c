@@ -10,10 +10,9 @@
 #include <unistd.h>
 
 int main(void) {
-
   printf("%s", WEL);
 
-  char *saved_path[2] = {NULL, save_path()}; // stored in form of input
+  char *saved_path[2] = {NULL, save_path()}; // stored in form of input array
   printf("Saved path: %s\n", saved_path[1]);
 
   char cwd[100];
@@ -34,7 +33,6 @@ int main(void) {
     if (!check_alias(tokens)) {
       if (!check_history(tokens)) {
         if (!check_builtin(tokens)) {
-          print_tokens(tokens);
           run(tokens);
         }
       }
@@ -42,8 +40,6 @@ int main(void) {
 
     clear(tokens);
   }
-  printf("%s", EXI);
-
   // Cleaning up
   setpath(saved_path);
   free(saved_path[1]);
@@ -52,4 +48,6 @@ int main(void) {
   save_hist();
   save_aliases();
   free_hist();
+
+  printf("%s", EXI);
 }

@@ -87,11 +87,11 @@ int clear(char *array[INPUT_LEN]) {
   return 0;
 }
 
-void print_tokens(char *array[INPUT_LEN]) {
+void print_tokens(char *tokens[INPUT_LEN]) {
   printf("tokens: [");
-  for (int i = 0; array[i]; i++) {
-    printf("\"%s\"", array[i]);
-    if (array[i + 1]) {
+  for (int i = 0; tokens[i]; i++) {
+    printf("\"%s\"", tokens[i]);
+    if (tokens[i + 1]) {
       printf(", ");
     }
   }

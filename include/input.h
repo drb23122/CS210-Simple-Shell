@@ -23,6 +23,6 @@ int tokenize(char input[INPUT_LEN], char *output[INPUT_LEN]);
 int clear(char *array[INPUT_LEN]);
 
 // Print all tokens in array
-void print_tokens(char *array[INPUT_LEN]);
+void print_tokens(char *tokens[INPUT_LEN]);
 
 void stop_flashing_cursor(char *tokens[INPUT_LEN]);

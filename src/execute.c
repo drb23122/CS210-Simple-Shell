@@ -1,13 +1,12 @@
 #include "../include/input.h"
-#include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <unistd.h>
 
-int run(char *input[INPUT_LEN]) {
-  if (!*input) {
+int run(char *tokens[INPUT_LEN]) {
+  if (!*tokens) {
     return 1;
   }
 
@@ -18,10 +17,10 @@ int run(char *input[INPUT_LEN]) {
 
   } else if (!p) {
     // Child proccess
-    if (execvp(input[0], input) == -1) {
+    if (execvp(tokens[0], tokens) == -1) {
       // If this point reached, an error occured in exec
 
-      perror(input[0]);
+      perror(tokens[0]);
       exit(1);
     }
 
