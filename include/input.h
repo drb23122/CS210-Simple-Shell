@@ -1,4 +1,4 @@
-#define INPUT_LEN 512
+#define INPUT_LEN 15
 
 #define BLINK "\x1b[5m"
 #define RESET "\x1b[0m"

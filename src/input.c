@@ -23,7 +23,7 @@ void print_flashing_cursor() {
 }
 
 void stop_flashing_cursor(char *tokens[INPUT_LEN]) {
-  printf("\33[A\33[2K\r");
+  printf("\33[A\33[2K\r"); // move cursor up to previous line back to start
   print_prompt();
 
   printf(PURPLE_BG BLACK_FG "" PURPLE_FG BLACK_BG "" RESET " ");
@@ -46,8 +46,9 @@ int get_input(char *input_buffer, char *output[INPUT_LEN]) {
 
   // Exit if CTR-d pressed
   if (!ret) {
-    printf("\n");
+    printf("\n"); // blank line above promt since no \n after CTR-d
     stop_flashing_cursor(NULL);
+    printf("\n"); // put result under prompt
     return 0;
   }
 
