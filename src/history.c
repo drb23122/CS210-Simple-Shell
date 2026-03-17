@@ -5,7 +5,8 @@
 #include <stdlib.h>
 #include <string.h>
 
-char *history[HIST_LEN][INPUT_LEN]; // 2D array, each row represents a tokenized command line
+char *history[HIST_LEN][INPUT_LEN]; // 2D array, each row represents a tokenized
+                                    // command line
 int head = 0;                       // next available spot in the array
 
 // This method will be called when the input has been tokenised
@@ -27,10 +28,10 @@ int check_history(char *tokens[INPUT_LEN]) {
       return 1;
     }
 
-    //now check for !!, !n, !-n
+    // now check for !!, !n, !-n
     int pos;
 
-    //!! 
+    //!!
     if (tokens[0][1] == '!') {
 
       // only '!!' can be entered
@@ -51,7 +52,8 @@ int check_history(char *tokens[INPUT_LEN]) {
 
       // boundary checking... if a valid int and if it's in range
       if (num <= -HIST_LEN || num > HIST_LEN || num == 0) {
-        printf("You can only call to the last 20 commands, make sure you've entered a valid integer!\n");                                                
+        printf("You can only call to the last 20 commands, make sure you've "
+               "entered a valid integer!\n");
         return 1;
       }
 
@@ -88,7 +90,7 @@ int check_history(char *tokens[INPUT_LEN]) {
   return 0;
 }
 
-// This method is called when no history call has been made 
+// This method is called when no history call has been made
 void history_add(char *tokens[INPUT_LEN]) {
 
   // if circular occurs then have to free the element leaving
@@ -108,7 +110,7 @@ void history_add(char *tokens[INPUT_LEN]) {
   head = (head + 1) % HIST_LEN;
 }
 
-//printing history
+// printing history
 void output_hist(FILE *stream) {
   int index = 1; // for printing the command number
   for (int i = 0; i < HIST_LEN; i++) {
@@ -126,7 +128,7 @@ void output_hist(FILE *stream) {
   }
 }
 
-//loading histroy from file
+// loading histroy from file
 void load_hist() {
   set_home();
   char buffer[INPUT_LEN + 4]; // buffer for each line to be read to from file
@@ -142,7 +144,7 @@ void load_hist() {
   }
 }
 
-//saving to history file
+// saving to history file
 void save_hist() {
   set_home();
   FILE *hist_file = fopen(".hist_list", "w");
