@@ -40,6 +40,7 @@ int main(void) {
 
     clear(tokens);
   }
+
   // Cleaning up
   setpath(saved_path);
   free(saved_path[1]);
