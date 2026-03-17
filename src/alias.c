@@ -20,6 +20,20 @@ int check_alias(char *tokens[INPUT_LEN]) {
     return 2;
   }
 
+  // if alias entered
+  if (!strcmp(tokens[0], "alias")) {
+    // If alias by itself entered then output all aliases
+    if (!tokens[1]) {
+      output_aliases(stdout);
+    }
+    // else add a new alias
+    else if (!add_alias(tokens)) {
+      printf("Alias %s saved!\n", tokens[1]); // no error occured
+    }
+    return 2;
+  }
+
+  // check that each token won't result in an infinite alias
   for (int t = 0; tokens[t]; t++) {
     // make sure each alias can only be used once per token
     int used[ALIAS_LEN] = {0};
@@ -66,8 +80,6 @@ int insert_alias(char *tokens[INPUT_LEN], int *chars) {
     for (int ali_num = 0; ali_num < head_a; ali_num++) {
       if (!strcmp(tokens[tok_num], aliases[ali_num]->name)) {
         *chars = *chars - (int)strlen(tokens[tok_num]); // remove aliased word
-        printf("len: %d, tok: %s\n", *chars, tokens[tok_num]);
-
         // If alias found then insert it
         int endpos = 0;
         for (; tokens[endpos]; endpos++) {
@@ -82,9 +94,8 @@ int insert_alias(char *tokens[INPUT_LEN], int *chars) {
 
         // Insert new elements
         for (int k = 0; k < cmd_len; k++) {
-          // check inserting new word won't cause buffer overflow, +1 for space
+          // check inserting word won't cause buffer overflow, +1 for space
           *chars = *chars + (int)strlen(aliases[ali_num]->command[k]) + 1;
-          printf("len: %d, alias: %s\n", *chars, aliases[ali_num]->command[k]);
           if (*chars >= INPUT_LEN) {
             printf("Buffer overflow detected!\n");
             return 1;
@@ -163,6 +174,9 @@ void remove_alias(char *tokens[INPUT_LEN]) {
 }
 
 void output_aliases(FILE *stream) {
+  if (head_a == 0) {
+    printf("No aliases have been set!\n");
+  }
   for (int i = 0; i < head_a; i++) {
     fprintf(stream, "alias %s ", aliases[i]->name);
     for (int j = 0; j < aliases[i]->command_len; j++) {

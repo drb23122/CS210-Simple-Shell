@@ -15,9 +15,3 @@ void cd(char *tokens[INPUT_LEN]);
 
 // prints the history in order from oldest to newest
 void print_history(char *tokens[INPUT_LEN]);
-
-// prints the history in order from oldest to newest
-void alias(char *tokens[INPUT_LEN]);
-
-// prints all aliases
-void print_aliases(char *tokens[INPUT_LEN]);

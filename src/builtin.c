@@ -9,11 +9,9 @@
 #include <string.h>
 #include <unistd.h>
 
-const int NUM = 6;
-const char *names[] = {"getpath", "setpath", "cd",
-                       "history", "alias",   "aliases"};
-void (*const funcs[])(char **) = {&getpath,       &setpath, &cd,
-                                  &print_history, &alias,   &print_aliases};
+const int NUM = 4;
+const char *names[] = {"getpath", "setpath", "cd", "history"};
+void (*const funcs[])(char **) = {&getpath, &setpath, &cd, &print_history};
 
 int check_builtin(char *tokens[INPUT_LEN]) {
   if (!tokens[0]) {
@@ -61,19 +59,5 @@ void print_history(char *tokens[INPUT_LEN]) {
     printf("history doesn't take parameters!\n");
   } else {
     output_hist(stdout);
-  }
-}
-
-void alias(char *tokens[INPUT_LEN]) {
-  if (!add_alias(tokens)) {
-    printf("Alias %s saved!\n", tokens[1]); // no error occured
-  }
-}
-
-void print_aliases(char *tokens[INPUT_LEN]) {
-  if (tokens[1]) {
-    printf("aliases doesn't take parameters!\n");
-  } else {
-    output_aliases(stdout);
   }
 }
