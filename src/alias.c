@@ -125,7 +125,7 @@ int add_alias(char *tokens[INPUT_LEN]) {
     return 1;
   }
 
-  for (int a = 0; a < head_a; a++) {
+  for (int a = 0; a < head_alias; a++) {
     if (!strcmp(aliases[a]->name, tokens[1])) {
       printf("Overriding alias %s\n", tokens[1]);
       remove_alias(tokens);
@@ -133,7 +133,7 @@ int add_alias(char *tokens[INPUT_LEN]) {
     }
   }
 
-  if (head_a >= ALIAS_LEN) {
+  if (head_alias >= ALIAS_LEN) {
     printf("Cannot add any more aliases!\n");
     return 1;
   }
