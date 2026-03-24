@@ -6,8 +6,9 @@
 #include <stdlib.h>
 #include <string.h>
 
-char *history[HIST_LEN][INPUT_LEN]; // 2D array, each row represents a tokenized command line
-int head = 0;                       // next available spot in the array (ciruclar implementation)
+char *history[HIST_LEN][INPUT_LEN]; // 2D array, each row represents a tokenized
+                                    // command line
+int head = 0; // next available spot in the array (ciruclar implementation)
 
 // check for history prompt and deal with current input
 int check_history(char *tokens[INPUT_LEN]) {
@@ -26,7 +27,7 @@ int check_history(char *tokens[INPUT_LEN]) {
       return 1;
     }
 
-    //checking for !!, !n, !-n
+    // checking for !!, !n, !-n
     int pos;
 
     //!!
@@ -86,28 +87,29 @@ int check_history(char *tokens[INPUT_LEN]) {
     // at this point now, tokens conatins the executeable history command
     return 0;
   }
-  
-  //add current input line to history
+
+  // add current input line to history
   history_add(tokens);
   return 0;
 }
 
-//no history call has been made, add to history
+// no history call has been made, add to history
 void history_add(char *tokens[INPUT_LEN]) {
 
-  // if circular occurs then have to free the element leaving array due to malloc
+  // if circular occurs then have to free the element leaving array due to
+  // malloc
   for (int i = 0; history[head][i]; i++) {
     free(history[head][i]);
     history[head][i] = NULL;
   }
 
-  //add the current token input to history
+  // add the current token input to history
   for (int i = 0; tokens[i]; i++) {
     history[head][i] = malloc((strlen(tokens[i]) + 1) * sizeof(char));
     strcpy(history[head][i], tokens[i]);
   }
 
-  //circular head implementation
+  // circular head implementation
   head = (head + 1) % HIST_LEN;
 }
 
