@@ -17,8 +17,8 @@ int check_alias(char *tokens[INPUT_LEN]);
 // Check if token will result in an infinite alias
 int alias_invalid(char *token, int used[ALIAS_LEN]);
 
-// Inserts a single alias into the tokens array, returns 0 if no more aliases found.
-// Chars keeps track of the total length, to check for buffer overflows
+// Inserts a single alias into the tokens array, returns 0 if no more aliases
+// found. Chars keeps track of the total length, to check for buffer overflows
 int insert_alias(char *tokens[INPUT_LEN], int *chars);
 
 // Create a new alias
