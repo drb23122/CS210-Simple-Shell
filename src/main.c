@@ -10,11 +10,13 @@
 #include <unistd.h>
 
 int main(void) {
-  printf("%s", WEL);
+  printf("%s", WEL); // prints welcome ASCII art
 
-  char *saved_path[2] = {NULL, save_path()}; // stored in form of input array
+  char *saved_path[2] = {NULL,
+                         save_path()}; // store PATH in form of input array
   printf("Saved path: %s\n", saved_path[1]);
 
+  // moving working directory
   char cwd[100];
   getcwd(cwd, 100);
   printf("Old HOME: %s\n", cwd);
@@ -22,6 +24,7 @@ int main(void) {
   getcwd(cwd, 100);
   printf("New HOME: %s\n", cwd);
 
+  // loading hitory and aliases stored in persistent storage
   load_hist();
   load_aliases();
 
@@ -29,6 +32,7 @@ int main(void) {
   char *tokens[INPUT_LEN];      // Pointers to each token in buffer
   clear(tokens); // Clears data left over from previous run which causes errors
 
+  // run until termination command is entered
   while (get_input(input_buffer, tokens)) {
     if (!check_alias(tokens)) {
       if (!check_history(tokens)) {
@@ -46,9 +50,11 @@ int main(void) {
   free(saved_path[1]);
   printf("Restored path: %s\n", getenv("PATH"));
 
+  // save back to file
   save_hist();
   save_aliases();
   free_hist();
 
+  // printing exit ASCII art
   printf("%s", EXI);
 }

@@ -1,4 +1,5 @@
 #include "../include/history.h"
+#include "../include/alias.h"
 #include "../include/env.h"
 #include "../include/input.h"
 #include <stdio.h>
@@ -7,28 +8,26 @@
 
 char *history[HIST_LEN][INPUT_LEN]; // 2D array, each row represents a tokenized
                                     // command line
-int head = 0;                       // next available spot in the array
+int head_hist = 0; // next available spot in the array (ciruclar implementation)
 
-// This method will be called when the input has been tokenised
-// it's goal is to check that a history prompt has been entered and then execute
-// the command
+// check for history prompt and deal with current input
 int check_history(char *tokens[INPUT_LEN]) {
 
-  // if empty, then just return
+  // if command line empty, return
   if (!tokens[0]) {
     return 1;
   }
 
-  // check the first token is !- first sign of a valid history command
+  // check the first token is !
   if (tokens[0][0] == '!') {
 
-    // check if a second token exists- history doesn't take parameters
+    // check if a second token exists with history call
     if (tokens[1]) {
       printf("History doesn't take parameters!");
       return 1;
     }
 
-    // now check for !!, !n, !-n
+    // checking for !!, !n, !-n
     int pos;
 
     //!!
@@ -40,12 +39,12 @@ int check_history(char *tokens[INPUT_LEN]) {
         return 1;
       }
 
-      // else calculate the correct ! pos
-      pos = (HIST_LEN + head - 1) % HIST_LEN;
+      // else calculate the correct !! pos
+      pos = (HIST_LEN + head_hist - 1) % HIST_LEN;
+
     } else {
 
-      // this code below generates either a positive integer or a negative,
-      // dependent on call
+      // this code below generates either a positive or negative (!n or !-n)
       char num_s[4];
       strncpy(num_s, tokens[0] + 1, 3);
       int num = atoi(num_s);
@@ -60,14 +59,14 @@ int check_history(char *tokens[INPUT_LEN]) {
       // calculate the correct position
       // positive case
       if (num > 0) {
-        if (history[head][0]) {
-          pos = (head + num - 1) % HIST_LEN;
+        if (history[head_hist][0]) {
+          pos = (head_hist + num - 1) % HIST_LEN;
         } else
           pos = num - 1; // no overflow
       }
-      // negative case...
+      // negative case
       else {
-        pos = (HIST_LEN + head + num) % HIST_LEN;
+        pos = (HIST_LEN + head_hist + num) % HIST_LEN;
       }
     }
 
@@ -82,39 +81,43 @@ int check_history(char *tokens[INPUT_LEN]) {
       tokens[i] = history[pos][i];
     }
 
+    // Check if substitued value is alias
+    check_alias(tokens);
+
     // at this point now, tokens conatins the executeable history command
     return 0;
   }
-  // if we get here, the command line should be added to the array
+
+  // add current input line to history
   history_add(tokens);
   return 0;
 }
 
-// This method is called when no history call has been made
+// no history call has been made, add to history
 void history_add(char *tokens[INPUT_LEN]) {
 
-  // if circular occurs then have to free the element leaving
-  for (int i = 0; history[head][i]; i++) {
-    free(history[head][i]);
-    history[head][i] = NULL;
+  // if circular occurs then have to free the element leaving array due to
+  // malloc
+  for (int i = 0; history[head_hist][i]; i++) {
+    free(history[head_hist][i]);
+    history[head_hist][i] = NULL;
   }
 
-  // now we have freed position, need to add the current token input to history
+  // add the current token input to history
   for (int i = 0; tokens[i]; i++) {
-    // here, you will have a current token
-    history[head][i] = malloc((strlen(tokens[i]) + 1) * sizeof(char));
-    strcpy(history[head][i], tokens[i]);
+    history[head_hist][i] = malloc((strlen(tokens[i]) + 1) * sizeof(char));
+    strcpy(history[head_hist][i], tokens[i]);
   }
 
-  // head- next available position... circular implementation
-  head = (head + 1) % HIST_LEN;
+  // circular head implementation
+  head_hist = (head_hist + 1) % HIST_LEN;
 }
 
 // printing history
 void output_hist(FILE *stream) {
   int index = 1; // for printing the command number
   for (int i = 0; i < HIST_LEN; i++) {
-    int pos = (head + i) % HIST_LEN;
+    int pos = (head_hist + i) % HIST_LEN;
     if (history[pos][0]) { // if not empty then it must be the first element
       fprintf(stream, "%2d: ", index);
       index++;

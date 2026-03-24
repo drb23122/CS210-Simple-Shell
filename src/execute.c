@@ -5,6 +5,7 @@
 #include <sys/wait.h>
 #include <unistd.h>
 
+// input in correct form, time to run
 int run(char *tokens[INPUT_LEN]) {
   if (!*tokens) {
     return 1;

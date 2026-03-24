@@ -4,12 +4,14 @@
 #include <string.h>
 #include <unistd.h>
 
+// defining token delimiters
 const char delimiters[] = " \t\n|><&;";
 
 void print_prompt() {
   char cwd[100];
   getcwd(cwd, 100);
 
+  // for fancy prompt output
   printf(BLUE_FG "" BLACK_FG BLUE_BG "%s" RESET, getenv("USER"));
   printf(BLUE_FG ORANGE_BG "" RESET ORANGE_BG "%s" ORANGE_FG BLACK_BG "",
          cwd);
@@ -17,15 +19,18 @@ void print_prompt() {
   fflush(stdout); // Fix for prompt not printing correctly
 }
 
+// for fancy prompt
 void print_flashing_cursor() {
   printf(PURPLE_BG BLACK_FG BLINK "" PURPLE_FG BLACK_BG "" RESET " ");
   fflush(stdout); // Fix for prompt not printing correctly
 }
 
+// for fancy prompt
 void stop_flashing_cursor(char *tokens[INPUT_LEN]) {
   printf("\33[A\33[2K\r"); // move cursor up to previous line back to start
   print_prompt();
 
+  // for fancy prompt
   printf(PURPLE_BG BLACK_FG "" PURPLE_FG BLACK_BG "" RESET " ");
   if (!tokens) {
     return;
@@ -42,7 +47,8 @@ int get_input(char *input_buffer, char *output[INPUT_LEN]) {
   printf("\n"); // Can't put this in print_prompt or lines will be double spaced
   print_prompt();
   print_flashing_cursor();
-  char *ret = fgets(input_buffer, INPUT_LEN, stdin);
+  char *ret =
+      fgets(input_buffer, INPUT_LEN, stdin); // get input from command line
 
   // Exit if CTR-d pressed
   if (!ret) {
@@ -52,6 +58,7 @@ int get_input(char *input_buffer, char *output[INPUT_LEN]) {
     return 0;
   }
 
+  // call tokenize to split input into string tokens
   tokenize(input_buffer, output);
   stop_flashing_cursor(output);
   // If input is empty
@@ -88,6 +95,7 @@ int clear(char *array[INPUT_LEN]) {
   return 0;
 }
 
+// testing method
 void print_tokens(char *tokens[INPUT_LEN]) {
   printf("tokens: [");
   for (int i = 0; tokens[i]; i++) {
