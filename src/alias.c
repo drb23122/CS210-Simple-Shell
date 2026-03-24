@@ -115,6 +115,24 @@ int add_alias(char *tokens[INPUT_LEN]) {
     printf("Alias must have name and command!\n");
     return 1;
   }
+
+  // Checks if alias loaded from file is valid
+  if (!tokens[0]) {
+    return 1;
+  }
+  if (strcmp(tokens[0], "alias")) {
+    printf("Invalid alias from file!\n");
+    return 1;
+  }
+
+  for (int a = 0; a < head_a; a++) {
+    if (!strcmp(aliases[a]->name, tokens[1])) {
+      printf("Overriding alias %s\n", tokens[1]);
+      remove_alias(tokens);
+      break;
+    }
+  }
+
   if (head_a >= ALIAS_LEN) {
     printf("Cannot add any more aliases!\n");
     return 1;
