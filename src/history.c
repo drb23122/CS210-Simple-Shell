@@ -1,4 +1,5 @@
 #include "../include/history.h"
+#include "../include/alias.h"
 #include "../include/env.h"
 #include "../include/input.h"
 #include <stdio.h>
@@ -57,14 +58,14 @@ int check_history(char *tokens[INPUT_LEN]) {
       // calculate the correct position
       // positive case
       if (num > 0) {
-        if (history[head][0]) {
-          pos = (head + num - 1) % HIST_LEN;
+        if (history[head_hist][0]) {
+          pos = (head_hist + num - 1) % HIST_LEN;
         } else
           pos = num - 1; // no overflow
       }
       // negative case
       else {
-        pos = (HIST_LEN + head + num) % HIST_LEN;
+        pos = (HIST_LEN + head_hist + num) % HIST_LEN;
       }
     }
 
@@ -79,7 +80,10 @@ int check_history(char *tokens[INPUT_LEN]) {
       tokens[i] = history[pos][i];
     }
 
-    // at this point now, tokens contain an executable history command
+    // Check if substitued value is alias
+    check_alias(tokens);
+
+    // at this point now, tokens conatins the executeable history command
     return 0;
   }
   
@@ -111,7 +115,7 @@ void history_add(char *tokens[INPUT_LEN]) {
 void output_hist(FILE *stream) {
   int index = 1; // for printing the command number
   for (int i = 0; i < HIST_LEN; i++) {
-    int pos = (head + i) % HIST_LEN;
+    int pos = (head_hist + i) % HIST_LEN;
     if (history[pos][0]) { // if not empty then it must be the first element
       fprintf(stream, "%2d: ", index);
       index++;
