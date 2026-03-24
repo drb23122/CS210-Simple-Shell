@@ -8,7 +8,7 @@
 
 char *history[HIST_LEN][INPUT_LEN]; // 2D array, each row represents a tokenized
                                     // command line
-int head = 0; // next available spot in the array (ciruclar implementation)
+int head_hist = 0; // next available spot in the array (ciruclar implementation)
 
 // check for history prompt and deal with current input
 int check_history(char *tokens[INPUT_LEN]) {
@@ -40,7 +40,7 @@ int check_history(char *tokens[INPUT_LEN]) {
       }
 
       // else calculate the correct !! pos
-      pos = (HIST_LEN + head - 1) % HIST_LEN;
+      pos = (HIST_LEN + head_hist - 1) % HIST_LEN;
 
     } else {
 
@@ -98,19 +98,19 @@ void history_add(char *tokens[INPUT_LEN]) {
 
   // if circular occurs then have to free the element leaving array due to
   // malloc
-  for (int i = 0; history[head][i]; i++) {
-    free(history[head][i]);
-    history[head][i] = NULL;
+  for (int i = 0; history[head_hist][i]; i++) {
+    free(history[head_hist][i]);
+    history[head_hist][i] = NULL;
   }
 
   // add the current token input to history
   for (int i = 0; tokens[i]; i++) {
-    history[head][i] = malloc((strlen(tokens[i]) + 1) * sizeof(char));
-    strcpy(history[head][i], tokens[i]);
+    history[head_hist][i] = malloc((strlen(tokens[i]) + 1) * sizeof(char));
+    strcpy(history[head_hist][i], tokens[i]);
   }
 
   // circular head implementation
-  head = (head + 1) % HIST_LEN;
+  head_hist = (head_hist + 1) % HIST_LEN;
 }
 
 // printing history
