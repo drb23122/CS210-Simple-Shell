@@ -6,7 +6,7 @@
 #include <string.h>
 
 Alias *aliases[ALIAS_LEN];
-int head_a = 0;
+int head_a = 0; // keeps a count of how many aliases we have
 
 // Returns 0 to continue
 int check_alias(char *tokens[INPUT_LEN]) {
