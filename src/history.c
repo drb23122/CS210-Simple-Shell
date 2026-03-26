@@ -86,7 +86,7 @@ int check_history(char *tokens[INPUT_LEN]) {
   }
 
   // add current input line to history
-  //history_add(tokens);  sholdnt need this now
+  // history_add(tokens);  sholdnt need this now
   return 0;
 }
 
@@ -162,8 +162,8 @@ void free_hist() {
   }
 }
 
-//create a copy of token array
-//  src: original token array   dst: destination thatll recieve copies
+// create a copy of token array
+//   src: original token array   dst: destination thatll recieve copies
 void copy_tokens(char *src[INPUT_LEN], char *dst[INPUT_LEN]) {
   // set every destination pointer to NULL first
   // this makes the array safe to free later, even if not every slot is used
@@ -179,8 +179,8 @@ void copy_tokens(char *src[INPUT_LEN], char *dst[INPUT_LEN]) {
   }
 }
 
-//frees all the strings in copied array
-//tokens: token array previously created by copy_tokens
+// frees all the strings in copied array
+// tokens: token array previously created by copy_tokens
 void free_token_copy(char *tokens[INPUT_LEN]) {
   // check every slot in the array
   for (int i = 0; i < INPUT_LEN; i++) {

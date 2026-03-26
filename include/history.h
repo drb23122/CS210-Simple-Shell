@@ -21,7 +21,8 @@ void load_hist();
 // Save the history to the history file
 void save_hist();
 
-// Creates a separate copy of a token array so the original user input can be preserved 
+// Creates a separate copy of a token array so the original user input can be
+// preserved
 void copy_tokens(char *src[INPUT_LEN], char *dst[INPUT_LEN]);
 
 // Frees all dynamically allocated strings in a copied token array to avoid

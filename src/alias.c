@@ -25,7 +25,7 @@ int check_alias(char *tokens[INPUT_LEN]) {
     // If alias by itself entered then output all aliases
     if (!tokens[1]) {
       output_aliases(stdout);
-    }// else add a new alias
+    } // else add a new alias
     else {
       add_alias(tokens); // changed for better output
     }
