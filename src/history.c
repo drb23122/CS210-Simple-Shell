@@ -81,15 +81,12 @@ int check_history(char *tokens[INPUT_LEN]) {
       tokens[i] = history[pos][i];
     }
 
-    // Check if substitued value is alias
-    check_alias(tokens);
-
     // at this point now, tokens conatins the executeable history command
     return 0;
   }
 
   // add current input line to history
-  history_add(tokens);
+  //history_add(tokens);  sholdnt need this now
   return 0;
 }
 
@@ -161,6 +158,36 @@ void free_hist() {
     for (int j = 0; history[i][j]; j++) {
       free(history[i][j]);
       history[i][j] = NULL;
+    }
+  }
+}
+
+//create a copy of token array
+//  src: original token array   dst: destination thatll recieve copies
+void copy_tokens(char *src[INPUT_LEN], char *dst[INPUT_LEN]) {
+  // set every destination pointer to NULL first
+  // this makes the array safe to free later, even if not every slot is used
+  for (int i = 0; i < INPUT_LEN; i++) {
+    dst[i] = NULL;
+  }
+
+  // copy each token from src into new memory in dst
+  // stops when the NULL terminator of the token list is reached
+  for (int i = 0; src[i]; i++) {
+    dst[i] = malloc((strlen(src[i]) + 1) * sizeof(char));
+    strcpy(dst[i], src[i]);
+  }
+}
+
+//frees all the strings in copied array
+//tokens: token array previously created by copy_tokens
+void free_token_copy(char *tokens[INPUT_LEN]) {
+  // check every slot in the array
+  for (int i = 0; i < INPUT_LEN; i++) {
+    // only free memory if this slot actually points to allocated storage
+    if (tokens[i]) {
+      free(tokens[i]);
+      tokens[i] = NULL; // clear pointer after freeing
     }
   }
 }

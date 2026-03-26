@@ -1,5 +1,4 @@
 // history header file
-
 #include "../include/input.h"
 #include <stdio.h>
 #define HIST_LEN 20
@@ -21,3 +20,10 @@ void load_hist();
 
 // Save the history to the history file
 void save_hist();
+
+// Creates a separate copy of a token array so the original user input can be preserved 
+void copy_tokens(char *src[INPUT_LEN], char *dst[INPUT_LEN]);
+
+// Frees all dynamically allocated strings in a copied token array to avoid
+// memory leaks once that temporary copy is no longer needed
+void free_token_copy(char *tokens[INPUT_LEN]);
