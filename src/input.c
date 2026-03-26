@@ -9,7 +9,9 @@ const char delimiters[] = " \t\n|><&;";
 
 void print_prompt() {
   char cwd[100];
-  getcwd(cwd, 100);
+  if (getcwd(cwd, sizeof(cwd)) == NULL) {
+    return;
+  }
 
   // for fancy prompt output
   printf(BLUE_FG "" BLACK_FG BLUE_BG "%s" RESET, getenv("USER"));

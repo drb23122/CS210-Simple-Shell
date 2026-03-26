@@ -8,6 +8,7 @@
 Alias *aliases[ALIAS_LEN];
 int head_alias = 0; // keeps a count of how many aliases we have
 
+// Returns 0 to continue
 int check_alias(char *tokens[INPUT_LEN]) {
   if (!tokens[0]) {
     return 1;
@@ -24,10 +25,9 @@ int check_alias(char *tokens[INPUT_LEN]) {
     // If alias by itself entered then output all aliases
     if (!tokens[1]) {
       output_aliases(stdout);
-    }
-    // else add a new alias
-    else if (!add_alias(tokens)) {
-      printf("Alias %s saved!\n", tokens[1]); // no error occured
+    }// else add a new alias
+    else {
+      add_alias(tokens); // changed for better output
     }
     return 2;
   }
@@ -63,7 +63,6 @@ int alias_invalid(char *token, int used[ALIAS_LEN]) {
       }
       used[a] = 1;
 
-      // check every token that will be subbed in for infinite aliases
       for (int c = 0; c < aliases[a]->command_len; c++) {
         if (alias_invalid(aliases[a]->command[c], used)) {
           return 1;
@@ -74,6 +73,7 @@ int alias_invalid(char *token, int used[ALIAS_LEN]) {
   return 0;
 }
 
+// returns 1 while aliases found
 int insert_alias(char *tokens[INPUT_LEN], int *chars) {
   for (int tok_num = 0; tokens[tok_num]; tok_num++) {
     for (int ali_num = 0; ali_num < head_alias; ali_num++) {
@@ -118,34 +118,26 @@ int add_alias(char *tokens[INPUT_LEN]) {
     printf("Invalid alias from file!\n");
     return 1;
   }
-  if (!tokens[1] || !tokens[2]) {
-    printf("Alias must have name and command!\n");
-    return 1;
-  }
 
-  // check if alias already exists
   for (int a = 0; a < head_alias; a++) {
     if (!strcmp(aliases[a]->name, tokens[1])) {
       printf("Overriding alias %s\n", tokens[1]);
-      remove_alias(tokens); // remove it if it already exists
+      remove_alias(tokens);
       break;
     }
   }
 
-  // check alias limit not reached
   if (head_alias >= ALIAS_LEN) {
     printf("Cannot add any more aliases!\n");
     return 1;
   }
 
-  // Create a new alias
   aliases[head_alias] = malloc(sizeof(Alias));
 
   aliases[head_alias]->command_len = 0;
   aliases[head_alias]->name = malloc((strlen(tokens[1]) + 1) * sizeof(char));
   strcpy(aliases[head_alias]->name, tokens[1]);
 
-  // Copy command into new alias
   for (int i = 0; tokens[i + 2]; i++) {
     aliases[head_alias]->command_len++;
     aliases[head_alias]->command[i] =
@@ -154,6 +146,7 @@ int add_alias(char *tokens[INPUT_LEN]) {
   }
 
   head_alias++;
+  printf("Alias %s saved!\n", tokens[1]);
   return 0;
 }
 
@@ -171,13 +164,14 @@ void remove_alias(char *tokens[INPUT_LEN]) {
       break;
     }
   }
+
   if (num == -1) {
     printf("Alias not found!\n");
     return;
   }
+  printf("Unaliasing %s\n", tokens[1]);
 
   // remove old alias
-  printf("Unaliasing %s\n", tokens[1]);
   free(aliases[num]->name);
   for (int i = 0; i < aliases[num]->command_len; i++) {
     free(aliases[num]->command[i]);
@@ -185,7 +179,7 @@ void remove_alias(char *tokens[INPUT_LEN]) {
   }
   free(aliases[num]);
   aliases[num] = NULL;
-  // fill free space in aliases array
+  // fill free space
   for (int i = num; i < head_alias - 1; i++) {
     aliases[i] = aliases[i + 1];
   }
